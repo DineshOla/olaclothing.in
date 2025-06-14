@@ -42,12 +42,12 @@
             </picture>
         </section>
 
-        <nav>
+        <!-- <nav>
             <ul class="nav-links-gender">
                 <li><a href="#mens-categories">SHOP FOR MEN</a></li>
                 <li><a href="#womens-categories">SHOP FOR WOMEN</a></li>
             </ul>
-        </nav>
+        </nav> -->
 
         <section class="discounts">
             <div class="discount-box-men">
@@ -185,21 +185,22 @@
         });
 
         // Back to Top Button
-        let mybutton = document.querySelector(".back-to-top");
-        window.onscroll = function() {scrollFunction()};
+       const backToTopBtn = document.querySelector(".back-to-top");
 
-        function scrollFunction() {
-            if (document.body.scrollTop > 20 || document.documentElement.scrollTop > 20) {
-                mybutton.style.display = "block";
-            } else {
-                mybutton.style.display = "none";
-            }
-        }
+window.addEventListener("scroll", () => {
+    if (window.scrollY > 100) {
+        backToTopBtn.style.display = "block";
+    } else {
+        backToTopBtn.style.display = "none";
+    }
+});
 
-        function topFunction() {
-            document.body.scrollTop = 0;
-            document.documentElement.scrollTop = 0;
-        }
+backToTopBtn.addEventListener("click", () => {
+    window.scrollTo({
+        top: 0,
+        behavior: "smooth"
+    });
+});
     </script>
 </body>
 </html>
