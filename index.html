@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ola Clothing</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" integrity="sha512-9usAa10IRO0HhonpyAIVpjrylPvoDwiPUiKdWk5t3PyolY1cOd4DSE0Ga+ri4AuTroPR5aQvXU9xC6qOPnzFeg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@200;300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <header>
+        <div class="header-container">
+            <div class="logo">
+                <span>Ola Clothing</span>
+            </div>
+            <div class="search-bar">
+                <i class="fas fa-search search-icon"></i>
+                <input type="text" placeholder="Search Shirt, Jeans, or Code">
+                <button><i class="fas fa-search"></i></button>
+            </div>
+            <button class="hamburger" id="hamburger">
+                <i class="fas fa-bars"></i>
+            </button>
+            <nav id="header-nav">
+                <a href="#home">Home</a>
+                <a href="about.html">About</a>
+                <a href="contact.html">Contact</a>
+                <a href="profile.html">Profile</a>
+                <a href="#cart">Cart (<span id="cart-count">0</span>)</a>
+                <a href="#order-history">Orders</a>
+            </nav>
+        </div>
+    </header>
+
+    <main>
+        <section class="hero">
+            <picture>
+                <source media="(max-width: 480px)" srcset="img/Main-Banners-mobile.jpg">
+                <source media="(max-width: 768px)" srcset="img/Main-Banners-tablet.jpg">
+                <img src="img/Main-Banners.jpg" alt="Main Banner" width="100%">
+            </picture>
+        </section>
+
+        <nav>
+            <ul class="nav-links-gender">
+                <li><a href="#mens-categories">SHOP FOR MEN</a></li>
+                <li><a href="#womens-categories">SHOP FOR WOMEN</a></li>
+            </ul>
+        </nav>
+
+        <section class="discounts">
+            <div class="discount-box-men">
+                <h2>FLAT <span>10%</span> OFF ON MEN WEARABLES</h2>
+            </div>
+            <div class="discount-box-women">
+                <h2>FLAT <span>40%</span> OFF ON WOMEN WEARABLES</h2>
+            </div>
+        </section>
+
+        <!-- Men Categories -->
+        <section class="categories" id="mens-categories">
+            <h2>Men Categories</h2>
+            <div class="category-grid">
+                <div class="category-item">
+                    <a href="shirts.html"><img src="img/ men_shirts.jpg" alt="Shirts"></a>
+                    <p>Shirts</p>
+                </div>
+                <div class="category-item">
+                    <a href="denim.html"><img src="img/men_shirts.jpeg" alt="Denim" height="91px" width="121px"></a>
+                    <p>Denim</p>
+                </div>
+                <div class="category-item">
+                    <a href="polos-tees.html"><img src="img/men_polos&tees.jpg" alt="Polos & Tees"></a>
+                    <p>Polos & Tees</p>
+                </div>
+                <div class="category-item">
+                    <a href="shoes.html"><img src="img/ men_shoes.jpg" alt="Shoes"></a>
+                    <p>Shoes</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Women Categories -->
+        <section class="categories" id="womens-categories">
+            <h2>Women Categories</h2>
+            <div class="category-grid">
+                <div class="category-item">
+                    <a href="bags.html"><img src="img/women_bags.jpg" alt="Bags"></a>
+                    <p>Bags</p>
+                </div>
+                <div class="category-item">
+                    <a href="dress.html"><img src="img/women_dresses.jpg" alt="Dresses"></a>
+                    <p>Dresses</p>
+                </div>
+                <div class="category-item">
+                    <a href="tops.html"><img src="img/women_tops.jpg" alt="Tops"></a>
+                    <p>Tops</p>
+                </div>
+                <div class="category-item">
+                    <a href="jeans.html"><img src="img/women_jeans.jpg" alt="Denim"></a>
+                    <p>Jeans</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Cart and Order History Modals -->
+        <div class="cart-modal" id="cart-modal">
+            <div class="cart-content">
+                <span class="close" id="close-cart">×</span>
+                <h2>Shopping Cart</h2>
+                <div id="cart-items"></div>
+                <select id="payment-method">
+                    <option value="credit-card">Credit Card</option>
+                    <option value="paypal">PayPal</option>
+                    <option value="net-banking">Net Banking</option>
+                </select>
+                <button id="buy-now">Buy Now</button>
+            </div>
+        </div>
+        <div class="order-history-modal" id="order-history-modal">
+            <div class="order-history-content">
+                <span class="close" id="close-order-history">×</span>
+                <h2>Order History</h2>
+                <div id="order-history-items"></div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer Section -->
+    <footer id="contact" class="footer-container">
+        <h2>Contact Us</h2>
+        <p>Email: <a href="mailto:2023bcadinesh13503@poornima.edu.in">2023bcadinesh13503@poornima.edu.in</a></p>
+        <p>Phone: <a href="tel:+9166513832">+91 9166513832</a></p>
+        <p>Address: Jaipur, Rajasthan, India</p>
+        <div class="footer-bottom">
+            <div class="copyright">
+                <i class="fa-regular fa-copyright"></i> 2025 <span class="highlight">Ola Clothing</span>. All Rights Reserved.
+            </div>
+            <div class="made-with-love">
+                Made with <i class="fa fa-heart" style="font-size:25px;color:red;"></i> in India by Dinesh Ola
+            </div>
+            <div class="social-icons">
+                <a href="#" target="_blank" class="social-icon" aria-label="Facebook">
+                    <i class="fab fa-facebook-f"></i>
+                </a>
+                <a href="#" target="_blank" class="social-icon" aria-label="Twitter">
+                    <i class="fab fa-twitter"></i>
+                </a>
+                <a href="#" target="_blank" class="social-icon" aria-label="Instagram">
+                    <i class="fab fa-instagram"></i>
+                </a>
+                <a href="#" target="_blank" class="social-icon" aria-label="LinkedIn">
+                    <i class="fab fa-linkedin-in"></i>
+                </a>
+                <a href="#" target="_blank" class="social-icon" aria-label="Pinterest">
+                    <i class="fab fa-pinterest"></i>
+                </a>
+                <a href="#" target="_blank" class="social-icon" aria-label="YouTube">
+                    <i class="fab fa-youtube"></i>
+                </a>
+            </div>
+            <button onclick="topFunction()" class="back-to-top" aria-label="Back to top"> ↑</button>
+        </div>
+    </footer>
+
+    <!-- JavaScript -->
+    <script src="scriptaddtcart.js"></script>
+    <script>
+        // Hamburger Menu Toggle
+        document.getElementById('hamburger').addEventListener('click', function() {
+            const nav = document.getElementById('header-nav');
+            nav.classList.toggle('active');
+            this.innerHTML = nav.classList.contains('active') ? '<i class="fas fa-times"></i>' : '<i class="fas fa-bars"></i>';
+        });
+
+        // Header Scroll Effect
+        window.addEventListener('scroll', function() {
+            const header = document.querySelector('header');
+            if (window.scrollY > 50) {
+                header.classList.add('scrolled');
+            } else {
+                header.classList.remove('scrolled');
+            }
+        });
+
+        // Back to Top Button
+        let mybutton = document.querySelector(".back-to-top");
+        window.onscroll = function() {scrollFunction()};
+
+        function scrollFunction() {
+            if (document.body.scrollTop > 20 || document.documentElement.scrollTop > 20) {
+                mybutton.style.display = "block";
+            } else {
+                mybutton.style.display = "none";
+            }
+        }
+
+        function topFunction() {
+            document.body.scrollTop = 0;
+            document.documentElement.scrollTop = 0;
+        }
+    </script>
+</body>
+</html>
