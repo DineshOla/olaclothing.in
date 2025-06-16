@@ -9,6 +9,7 @@
 <body>
     <section id="about-us">
         <div class="container">
+            <button class="close-btn">✕</button>
             <h1>About Us</h1>
             <div class="content">
                 <div class="image">
@@ -25,5 +26,10 @@
             </div>
         </div>
     </section>
+    <script>
+        document.querySelector('.close-btn').addEventListener('click', function() {
+            window.location.href = 'index.html';
+        });
+    </script>
 </body>
 </html>

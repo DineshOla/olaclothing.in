@@ -12,10 +12,8 @@ function openTab(tabName) {
 /**
  * Simulates a very basic "hashing" for client-side storage.
  * IMPORTANT: This is NOT cryptographically secure for real applications.
- * Passwords should be hashed and salted on a secure backend.
  */
 function hashPassword(password) {
-    // For demonstration purposes only. Do NOT use in production.
     return btoa(password); // Base64 encoding - easily reversible!
 }
 
@@ -37,37 +35,33 @@ function isValidPassword(password) {
 
 function displayMessage(elementId, message, type) {
     const messageElement = document.getElementById(elementId);
-    // Clear previous message and class to allow animation to re-trigger
     messageElement.textContent = '';
     messageElement.className = '';
     
-    // Force reflow to restart animation (if needed for repeat messages)
     void messageElement.offsetHeight; 
 
     messageElement.textContent = message;
     messageElement.classList.add(type);
-    messageElement.style.opacity = 1; // Ensure it's visible if CSS transition relies on this
+    messageElement.style.opacity = 1;
 }
 
 function clearMessage(elementId) {
     const messageElement = document.getElementById(elementId);
     messageElement.textContent = '';
     messageElement.className = '';
-    messageElement.style.opacity = 0; // Hide it
+    messageElement.style.opacity = 0;
 }
 
-// Function to handle the floating label behavior
 function updateLabelPosition(inputElement) {
     const formGroup = inputElement.closest('.form-group');
     if (formGroup) {
-        if (inputElement.value) {
+        if (inputElement.value && inputElement.type !== 'file') {
             formGroup.classList.add('has-content');
         } else {
             formGroup.classList.remove('has-content');
         }
     }
 }
-
 
 function checkLoginStatus() {
     const loggedIn = localStorage.getItem('loggedInUser');
@@ -79,13 +73,11 @@ function checkLoginStatus() {
         loadProfile();
     } else {
         profileTab.style.display = 'none';
-        openTab('login');
-        // Clear messages when switching to login if not logged in
+        openTab('register'); // Start on register tab by default
         clearMessage('login-message');
         clearMessage('register-message');
         clearMessage('profile-message');
     }
-    // Also ensure labels are correct on tab switch
     document.querySelectorAll('.form-group input, .form-group textarea').forEach(updateLabelPosition);
 }
 
@@ -95,39 +87,12 @@ function loadProfile() {
         document.getElementById('profile-name').value = user.name;
         document.getElementById('profile-email').value = user.email;
         document.getElementById('profile-address').value = user.address || '';
-        // Clear password fields on load for security
         document.getElementById('profile-password').value = '';
         document.getElementById('profile-confirm-password').value = '';
 
-        // Trigger label animations for pre-filled profile fields
         document.querySelectorAll('#profile .form-group input, #profile .form-group textarea').forEach(updateLabelPosition);
     }
 }
-
-document.getElementById('login-form').addEventListener('submit', function(e) {
-    e.preventDefault();
-    const email = document.getElementById('login-email').value;
-    const password = document.getElementById('login-password').value;
-    
-    clearMessage('login-message'); // Clear previous message
-
-    if (!isValidEmail(email)) {
-        displayMessage('login-message', 'Please enter a valid email address.', 'error');
-        return;
-    }
-
-    const users = JSON.parse(localStorage.getItem('users') || '[]');
-    const user = users.find(u => u.email === email);
-    
-    // Check if user exists and password matches (using simulated hash)
-    if (user && checkPassword(password, user.passwordHash)) {
-        localStorage.setItem('loggedInUser', JSON.stringify(user));
-        displayMessage('login-message', `Welcome back, ${user.name}!`, 'success');
-        setTimeout(checkLoginStatus, 500); // Small delay to show message then transition
-    } else {
-        displayMessage('login-message', 'Invalid email or password.', 'error');
-    }
-});
 
 document.getElementById('register-form').addEventListener('submit', function(e) {
     e.preventDefault();
@@ -136,7 +101,7 @@ document.getElementById('register-form').addEventListener('submit', function(e) 
     const password = document.getElementById('reg-password').value;
     const confirmPassword = document.getElementById('reg-confirm-password').value;
     
-    clearMessage('register-message'); // Clear previous message
+    clearMessage('register-message');
 
     if (!isValidEmail(email)) {
         displayMessage('register-message', 'Please enter a valid email address.', 'error');
@@ -159,12 +124,38 @@ document.getElementById('register-form').addEventListener('submit', function(e) 
         return;
     }
     
-    const newUser = { name, email, passwordHash: hashPassword(password), address: '' }; // Store hash
+    const newUser = { name, email, passwordHash: hashPassword(password), address: '' };
     users.push(newUser);
     localStorage.setItem('users', JSON.stringify(users));
-    localStorage.setItem('loggedInUser', JSON.stringify(newUser));
-    displayMessage('register-message', 'Registration successful! Welcome, ' + name + '!', 'success');
-    setTimeout(checkLoginStatus, 500); // Small delay to show message then transition
+    displayMessage('register-message', 'Registration successful! Please login.', 'success');
+    
+    // Redirect to login tab after registration
+    setTimeout(() => openTab('login'), 1000);
+});
+
+document.getElementById('login-form').addEventListener('submit', function(e) {
+    e.preventDefault();
+    const email = document.getElementById('login-email').value;
+    const password = document.getElementById('login-password').value;
+    
+    clearMessage('login-message');
+
+    if (!isValidEmail(email)) {
+        displayMessage('login-message', 'Please enter a valid email address.', 'error');
+        return;
+    }
+
+    const users = JSON.parse(localStorage.getItem('users') || '[]');
+    const user = users.find(u => u.email === email);
+    
+    if (user && checkPassword(password, user.passwordHash)) {
+        localStorage.setItem('loggedInUser', JSON.stringify(user));
+        displayMessage('login-message', `Welcome back, ${user.name}!`, 'success');
+        // Use window.location.replace to force a full page reload
+        setTimeout(() => window.location.replace('index.html'), 1000);
+    } else {
+        displayMessage('login-message', 'Invalid email or password.', 'error');
+    }
 });
 
 document.getElementById('profile-form').addEventListener('submit', function(e) {
@@ -174,15 +165,13 @@ document.getElementById('profile-form').addEventListener('submit', function(e) {
     const newPassword = document.getElementById('profile-password').value;
     const confirmNewPassword = document.getElementById('profile-confirm-password').value;
     
-    clearMessage('profile-message'); // Clear previous message
+    clearMessage('profile-message');
 
     let user = JSON.parse(localStorage.getItem('loggedInUser'));
     
-    // Update name and address directly
     user.name = name;
     user.address = address;
 
-    // Handle password change only if new password fields are filled
     if (newPassword) {
         if (!isValidPassword(newPassword)) {
             displayMessage('profile-message', 'New password must be at least 6 characters long.', 'error');
@@ -193,44 +182,57 @@ document.getElementById('profile-form').addEventListener('submit', function(e) {
             displayMessage('profile-message', 'New passwords do not match.', 'error');
             return;
         }
-        user.passwordHash = hashPassword(newPassword); // Update with new hash
+        user.passwordHash = hashPassword(newPassword);
     }
     
     const users = JSON.parse(localStorage.getItem('users') || '[]');
     const userIndex = users.findIndex(u => u.email === user.email);
     
-    // Ensure user exists before updating
     if (userIndex !== -1) {
-        users[userIndex] = user; // Update the user object in the array
+        users[userIndex] = user;
         localStorage.setItem('users', JSON.stringify(users));
-        localStorage.setItem('loggedInUser', JSON.stringify(user)); // Update logged in user
+        localStorage.setItem('loggedInUser', JSON.stringify(user));
         displayMessage('profile-message', 'Profile updated successfully!', 'success');
-        // Clear password fields after successful update
         document.getElementById('profile-password').value = '';
         document.getElementById('profile-confirm-password').value = '';
-        // Re-check labels after update, especially if password fields are cleared
         document.querySelectorAll('#profile .form-group input, #profile .form-group textarea').forEach(updateLabelPosition);
     } else {
         displayMessage('profile-message', 'Error: User not found in database. Please log in again.', 'error');
-        localStorage.removeItem('loggedInUser'); // Log out if user not found
+        localStorage.removeItem('loggedInUser');
+        localStorage.removeItem('userImage');
         setTimeout(checkLoginStatus, 500);
+    }
+});
+
+// Handle image upload in the Profile tab
+document.getElementById('upload-user-image').addEventListener('change', (e) => {
+    const file = e.target.files[0];
+    if (file) {
+        const reader = new FileReader();
+        reader.onload = (event) => {
+            const imageDataUrl = event.target.result;
+            localStorage.setItem('userImage', imageDataUrl);
+            const userImage = document.getElementById('user-image');
+            userImage.src = imageDataUrl;
+            userImage.style.display = 'block';
+            displayMessage('profile-message', 'Profile image updated successfully!', 'success');
+        };
+        reader.readAsDataURL(file);
     }
 });
 
 document.getElementById('logout-button').addEventListener('click', function() {
     localStorage.removeItem('loggedInUser');
+    localStorage.removeItem('userImage');
     displayMessage('login-message', 'Logged out successfully!', 'success');
-    setTimeout(checkLoginStatus, 500); // Small delay to show message then transition
+    setTimeout(checkLoginStatus, 500);
 });
 
-// Initialize on page load
 window.onload = checkLoginStatus;
 
-// Add event listeners for input fields to handle label movement on input
 document.querySelectorAll('.form-group input, .form-group textarea').forEach(input => {
     input.addEventListener('input', () => updateLabelPosition(input));
-    input.addEventListener('focus', () => updateLabelPosition(input)); // Ensure label moves on focus even if empty
-    input.addEventListener('blur', () => updateLabelPosition(input));   // Ensure label returns if empty on blur
-    // Initial check for pre-filled values by browser (e.g., autofill)
+    input.addEventListener('focus', () => updateLabelPosition(input));
+    input.addEventListener('blur', () => updateLabelPosition(input));
     updateLabelPosition(input);
 });

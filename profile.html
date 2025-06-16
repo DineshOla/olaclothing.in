@@ -21,7 +21,13 @@
                 <a href="index.html">Home</a>
                 <a href="about.html">About</a>
                 <a href="contact.html">Contact</a>
-                <a href="profile.html">Profile</a>
+                <div class="user-profile">
+                    <div class="user-image-container">
+                        <img id="user-image" src="img/default-user.png" alt="User Image">
+                    </div>
+                    <span id="user-name" style="cursor: pointer;"></span>
+                    <a href="profile.html" id="profile-link">Profile</a>
+                </div>
                 <a href="#cart">Cart (<span id="cart-count">0</span>)</a>
                 <a href="#order-history">Orders</a>
             </nav>
@@ -30,6 +36,7 @@
 
     <main>
         <section id="user-profile">
+            <span class="close-profile" id="close-profile">×</span>
             <div class="container">
                 <h1>Account</h1>
                 <div class="tabs">
@@ -78,6 +85,10 @@
 
                 <div id="profile" class="tab-content">
                     <form id="profile-form">
+                        <div class="form-group user-image-upload">
+                            <label for="upload-user-image">Profile Image</label>
+                            <input type="file" id="upload-user-image" name="user-image" accept="image/*">
+                        </div>
                         <div class="form-group">
                             <label for="profile-name">Full Name</label>
                             <input type="text" id="profile-name" name="name" required>
@@ -178,6 +189,42 @@
             document.body.scrollTop = 0;
             document.documentElement.scrollTop = 0;
         }
+
+        // Display user name and image in the header
+        document.addEventListener('DOMContentLoaded', () => {
+            const loggedInUser = localStorage.getItem('loggedInUser');
+            const userNameSpan = document.getElementById('user-name');
+            const profileLink = document.getElementById('profile-link');
+            const userImage = document.getElementById('user-image');
+
+            if (loggedInUser) {
+                const user = JSON.parse(loggedInUser);
+                userNameSpan.textContent = `Hello, ${user.name} | `;
+                profileLink.textContent = 'Logout';
+                profileLink.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    localStorage.removeItem('loggedInUser');
+                    localStorage.removeItem('userImage');
+                    window.location.reload();
+                });
+
+                // Load user image from localStorage if available
+                const savedImage = localStorage.getItem('userImage');
+                if (savedImage) {
+                    userImage.src = savedImage;
+                    userImage.style.display = 'block';
+                }
+            } else {
+                userNameSpan.textContent = '';
+                profileLink.textContent = 'Profile';
+                userImage.style.display = 'none';
+            }
+        });
+
+        // Redirect to index.html when the close button is clicked
+        document.getElementById('close-profile').addEventListener('click', () => {
+            window.location.href = 'index.html';
+        });
     </script>
 </body>
 </html>

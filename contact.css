@@ -15,12 +15,35 @@ body {
     padding: 40px 20px;
     background: #f4f4f4;
     text-align: center;
+    position: relative;
 }
 
 .container {
     max-width: 1400px;
     margin: 0 auto;
     padding: 0 20px;
+}
+
+.close-btn {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    background: #ff7043;
+    color: white;
+    border: none;
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    font-size: 16px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background 0.3s;
+}
+
+.close-btn:hover {
+    background: #f4511e;
 }
 
 #contact-us h1 {
@@ -96,6 +119,14 @@ button:hover {
     }
 
     button {
+        font-size: 14px;
+    }
+
+    .close-btn {
+        top: 15px;
+        right: 15px;
+        width: 25px;
+        height: 25px;
         font-size: 14px;
     }
 }

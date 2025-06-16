@@ -43,14 +43,19 @@ function renderOrderHistory() {
 
 // Buy Now logic
 document.getElementById('buy-now').addEventListener('click', () => {
+    const loggedInUser = localStorage.getItem('loggedInUser');
+    if (!loggedInUser) {
+        alert('Please login to place an order.');
+        window.location.href = 'profile.html';
+        return;
+    }
+
     if (cart.length === 0) {
         alert('Cart is empty!');
         return;
     }
 
-    // Deep copy the cart items
     const copiedCart = window.structuredClone ? structuredClone(cart) : JSON.parse(JSON.stringify(cart));
-
     orderHistory.push({
         date: new Date().toLocaleString('en-IN', { timeZone: 'Asia/Kolkata' }),
         items: copiedCart
@@ -66,18 +71,36 @@ document.getElementById('buy-now').addEventListener('click', () => {
 
 // Show and close cart
 document.querySelector('a[href="#cart"]').addEventListener('click', () => {
+    const loggedInUser = localStorage.getItem('loggedInUser');
+    if (!loggedInUser) {
+        alert('Please login to view your cart.');
+        window.location.href = 'profile.html';
+        return;
+    }
+
     renderCartItems();
-    document.getElementById('cart-modal').style.display = 'block';
+    const modal = document.getElementById('cart-modal');
+    modal.style.display = 'flex';
 });
+
 document.getElementById('close-cart').addEventListener('click', () => {
     document.getElementById('cart-modal').style.display = 'none';
 });
 
 // Show and close order history
 document.querySelector('a[href="#order-history"]').addEventListener('click', () => {
+    const loggedInUser = localStorage.getItem('loggedInUser');
+    if (!loggedInUser) {
+        alert('Please login to view your order history.');
+        window.location.href = 'profile.html';
+        return;
+    }
+
     renderOrderHistory();
-    document.getElementById('order-history-modal').style.display = 'block';
+    const modal = document.getElementById('order-history-modal');
+    modal.style.display = 'flex';
 });
+
 document.getElementById('close-order-history').addEventListener('click', () => {
     document.getElementById('order-history-modal').style.display = 'none';
 });
@@ -103,22 +126,40 @@ document.querySelectorAll('.category-item').forEach(item => {
         return { id, name, image, price, size };
     };
 
-    addToCartBtn.addEventListener('click', () => {
-        const product = getProductDetails();
-        if (product) {
-            cart.push(product);
-            updateCartCount();
-            alert(`${product.name} added to cart!`);
-        }
-    });
+    if (addToCartBtn) {
+        addToCartBtn.addEventListener('click', () => {
+            const loggedInUser = localStorage.getItem('loggedInUser');
+            if (!loggedInUser) {
+                alert('Please login to add items to your cart.');
+                window.location.href = 'profile.html';
+                return;
+            }
 
-    buyNowBtn.addEventListener('click', () => {
-        const product = getProductDetails();
-        if (product) {
-            cart.push(product);
-            updateCartCount();
-            renderCartItems();
-            document.getElementById('cart-modal').style.display = 'block';
-        }
-    });
+            const product = getProductDetails();
+            if (product) {
+                cart.push(product);
+                updateCartCount();
+                alert(`${product.name} added to cart!`);
+            }
+        });
+    }
+
+    if (buyNowBtn) {
+        buyNowBtn.addEventListener('click', () => {
+            const loggedInUser = localStorage.getItem('loggedInUser');
+            if (!loggedInUser) {
+                alert('Please login to buy items.');
+                window.location.href = 'profile.html';
+                return;
+            }
+
+            const product = getProductDetails();
+            if (product) {
+                cart.push(product);
+                updateCartCount();
+                renderCartItems();
+                document.getElementById('cart-modal').style.display = 'flex';
+            }
+        });
+    }
 });
