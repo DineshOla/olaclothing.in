@@ -16,8 +16,9 @@
             </div>
             <div class="search-bar">
                 <i class="fas fa-search search-icon"></i>
-                <input type="text" placeholder="Search Shirt, Jeans, or Code">
-                <button><i class="fas fa-search"></i></button>
+                <input type="text" id="search-input" placeholder="Search Shirt, Jeans, or Code">
+                <button id="search-btn"><i class="fas fa-search"></i></button>
+                <div class="search-dropdown" id="search-dropdown"></div>
             </div>
             <button class="hamburger" id="hamburger">
                 <i class="fas fa-bars"></i>
@@ -26,7 +27,13 @@
                 <a href="index.html#home">Home</a>
                 <a href="index.html#about">About</a>
                 <a href="index.html#contact">Contact</a>
-                <a href="#">Profile</a>
+                <div class="user-profile">
+                    <div class="user-image-container">
+                        <img id="user-image" src="img/default-user.png" alt="User Image">
+                    </div>
+                    <span id="user-name" style="cursor: pointer;"></span>
+                    <a href="profile.html" id="profile-link">Profile</a>
+                </div>
                 <a href="#cart">Cart (<span id="cart-count">0</span>)</a>
                 <a href="#order-history">Orders</a>
             </nav>
@@ -34,11 +41,25 @@
     </header>
 
     <main>
+        <!-- User Details Modal -->
+        <div class="user-details-modal" id="user-details-modal">
+            <div class="user-details-content">
+                <span class="close" id="close-user-details">×</span>
+                <h2>User Details</h2>
+                <div id="modal-user-details">
+                    <p><strong>Name:</strong> <span id="modal-detail-name"></span></p>
+                    <p><strong>Email:</strong> <span id="modal-detail-email"></span></p>
+                    <p><strong>Address:</strong> <span id="modal-detail-address"></span></p>
+                </div>
+                <button id="update-profile-btn" onclick="window.location.href='profile.html'">Update Profile</button>
+            </div>
+        </div>
+
         <section class="categories category-collection" id="womens-jeans">
             <h2>Women Jeans Collection</h2>
             <button class="back-to-categories" onclick="hideCategoryCollection()">Back to Categories</button>
             <div class="container">
-                <div class="category-item" data-id="701" data-name="Jeans 1" data-image="img/women_jeans_1.jpg" data-price="4950">
+                <div class="category-item" data-id="701" data-name="Jeans 1" data-image="img/women_jeans_1_levis.jpeg" data-price="4950">
                     <img src="img/women_jeans_1_levis.jpeg" alt="Jeans 1">
                     <div class="details">
                         <p class="brand">Levi's</p>
@@ -52,13 +73,17 @@
                             <option value="32">32</option>
                             <option value="34">34</option>
                         </select>
+                        <div class="quantity-select">
+                            <label for="quantity-701">Quantity:</label>
+                            <input type="number" id="quantity-701" class="quantity-input" min="1" max="10" value="1">
+                        </div>
                         <div class="button-group">
                             <button class="add-to-cart">Add to Cart</button>
                             <button class="buy-now">Buy Now</button>
                         </div>
                     </div>
                 </div>
-                <div class="category-item" data-id="702" data-name="Jeans 2" data-image="img/women_jeans_2.jpg" data-price="5400">
+                <div class="category-item" data-id="702" data-name="Jeans 2" data-image="img/women_jeans_2_pepe.jpeg" data-price="5400">
                     <img src="img/women_jeans_2_pepe.jpeg" alt="Jeans 2">
                     <div class="details">
                         <p class="brand">Pepe Jeans</p>
@@ -72,13 +97,17 @@
                             <option value="32">32</option>
                             <option value="34">34</option>
                         </select>
+                        <div class="quantity-select">
+                            <label for="quantity-702">Quantity:</label>
+                            <input type="number" id="quantity-702" class="quantity-input" min="1" max="10" value="1">
+                        </div>
                         <div class="button-group">
                             <button class="add-to-cart">Add to Cart</button>
                             <button class="buy-now">Buy Now</button>
                         </div>
                     </div>
                 </div>
-                <div class="category-item" data-id="703" data-name="Jeans 3" data-image="img/women_jeans_3.jpg" data-price="4500">
+                <div class="category-item" data-id="703" data-name="Jeans 3" data-image="img/women_jeans_3_wrangler.jpeg" data-price="4500">
                     <img src="img/women_jeans_3_wrangler.jpeg" alt="Jeans 3">
                     <div class="details">
                         <p class="brand">Wrangler</p>
@@ -92,13 +121,17 @@
                             <option value="32">32</option>
                             <option value="34">34</option>
                         </select>
+                        <div class="quantity-select">
+                            <label for="quantity-703">Quantity:</label>
+                            <input type="number" id="quantity-703" class="quantity-input" min="1" max="10" value="1">
+                        </div>
                         <div class="button-group">
                             <button class="add-to-cart">Add to Cart</button>
                             <button class="buy-now">Buy Now</button>
                         </div>
                     </div>
                 </div>
-                <div class="category-item" data-id="704" data-name="Jeans 4" data-image="img/women_jeans_4.jpg" data-price="5850">
+                <div class="category-item" data-id="704" data-name="Jeans 4" data-image="img/women_jeans_4_lee.jpeg" data-price="5850">
                     <img src="img/women_jeans_4_lee.jpeg" alt="Jeans 4">
                     <div class="details">
                         <p class="brand">Lee</p>
@@ -112,13 +145,17 @@
                             <option value="32">32</option>
                             <option value="34">34</option>
                         </select>
+                        <div class="quantity-select">
+                            <label for="quantity-704">Quantity:</label>
+                            <input type="number" id="quantity-704" class="quantity-input" min="1" max="10" value="1">
+                        </div>
                         <div class="button-group">
                             <button class="add-to-cart">Add to Cart</button>
                             <button class="buy-now">Buy Now</button>
                         </div>
                     </div>
                 </div>
-                <div class="category-item" data-id="705" data-name="Jeans 5" data-image="img/women_jeans_5.jpg" data-price="6300">
+                <div class="category-item" data-id="705" data-name="Jeans 5" data-image="img/women_jeans_5_jack.jpeg" data-price="6300">
                     <img src="img/women_jeans_5_jack.jpeg" alt="Jeans 5">
                     <div class="details">
                         <p class="brand">Jack & Jones</p>
@@ -132,13 +169,17 @@
                             <option value="32">32</option>
                             <option value="34">34</option>
                         </select>
+                        <div class="quantity-select">
+                            <label for="quantity-705">Quantity:</label>
+                            <input type="number" id="quantity-705" class="quantity-input" min="1" max="10" value="1">
+                        </div>
                         <div class="button-group">
                             <button class="add-to-cart">Add to Cart</button>
                             <button class="buy-now">Buy Now</button>
                         </div>
                     </div>
                 </div>
-                <div class="category-item" data-id="706" data-name="Jeans 6" data-image="img/women_jeans_6.jpg" data-price="4050">
+                <div class="category-item" data-id="706" data-name="Jeans 6" data-image="img/women_jeans_6_diesel.jpeg" data-price="4050">
                     <img src="img/women_jeans_6_diesel.jpeg" alt="Jeans 6">
                     <div class="details">
                         <p class="brand">Diesel</p>
@@ -152,6 +193,10 @@
                             <option value="32">32</option>
                             <option value="34">34</option>
                         </select>
+                        <div class="quantity-select">
+                            <label for="quantity-706">Quantity:</label>
+                            <input type="number" id="quantity-706" class="quantity-input" min="1" max="10" value="1">
+                        </div>
                         <div class="button-group">
                             <button class="add-to-cart">Add to Cart</button>
                             <button class="buy-now">Buy Now</button>
@@ -224,6 +269,91 @@
     <!-- JavaScript -->
     <script src="scriptaddtcart.js"></script>
     <script>
+        // Sample product data for search
+        const products = [
+            { id: 1, name: "Men's Casual Shirt", category: "Shirts", price: 799, image: "img/men_shirts.jpeg", link: "shirts.html" },
+            { id: 2, name: "Men's Denim Jeans", category: "Denim", price: 1299, image: "img/men_denim.jpg.webp", link: "denim.html" },
+            { id: 3, name: "Men's Polo Tee", category: "Polos & Tees", price: 599, image: "img/men_polos&tees.jpg", link: "polo-tees.html" },
+            { id: 4, name: "Men's Sneakers", category: "Shoes", price: 1999, image: "img/men_shoes_2_sneaker.jpeg", link: "shoes.html" },
+            { id: 5, name: "Women's Handbag", category: "Bags", price: 1499, image: "img/women_bags.jpg", link: "bags.html" },
+            { id: 6, name: "Women's Dress", category: "Dresses", price: 1799, image: "img/women_dresses.jpg", link: "dresses.html" },
+            { id: 7, name: "Women's Top", category: "Tops", price: 699, image: "img/women_tops.jpg", link: "tops.html" },
+            { id: 8, name: "Women's Jeans", category: "Jeans", price: 1199, image: "img/women_jeans.jpg", link: "jeans.html" }
+        ];
+
+        // Function to display search results in the dropdown
+        function displaySearchDropdown(productList) {
+            const searchDropdown = document.getElementById('search-dropdown');
+            searchDropdown.innerHTML = '';
+
+            if (productList.length === 0) {
+                searchDropdown.style.display = 'none';
+                return;
+            }
+
+            productList.forEach(product => {
+                const dropdownItem = document.createElement('div');
+                dropdownItem.classList.add('search-dropdown-item');
+                dropdownItem.innerHTML = `
+                    <img src="${product.image}" alt="${product.name}">
+                    <div class="dropdown-details">
+                        <div class="dropdown-name">${product.name}</div>
+                        <div class="dropdown-price">₹${product.price}</div>
+                    </div>
+                `;
+                dropdownItem.addEventListener('click', () => {
+                    window.location.href = product.link;
+                });
+                searchDropdown.appendChild(dropdownItem);
+            });
+            searchDropdown.style.display = 'block';
+        }
+
+        // Search functionality
+        document.addEventListener('DOMContentLoaded', () => {
+            const searchInput = document.getElementById('search-input');
+            const searchBtn = document.getElementById('search-btn');
+            const searchDropdown = document.getElementById('search-dropdown');
+
+            // Search on input (real-time filtering for dropdown)
+            searchInput.addEventListener('input', () => {
+                const searchTerm = searchInput.value.toLowerCase();
+                if (searchTerm === '') {
+                    searchDropdown.style.display = 'none';
+                    return;
+                }
+
+                const filteredProducts = products.filter(product => 
+                    product.name.toLowerCase().includes(searchTerm) || 
+                    product.category.toLowerCase().includes(searchTerm)
+                );
+                displaySearchDropdown(filteredProducts);
+            });
+
+            // Search on button click
+            searchBtn.addEventListener('click', () => {
+                const searchTerm = searchInput.value.toLowerCase();
+                const filteredProducts = products.filter(product => 
+                    product.name.toLowerCase().includes(searchTerm) || 
+                    product.category.toLowerCase().includes(searchTerm)
+                );
+                displaySearchDropdown(filteredProducts);
+            });
+
+            // Hide dropdown when clicking outside
+            document.addEventListener('click', (e) => {
+                if (!searchInput.contains(e.target) && !searchDropdown.contains(e.target)) {
+                    searchDropdown.style.display = 'none';
+                }
+            });
+
+            // Load user profile and image
+            loadUserProfile();
+
+            // Attach event listeners for add to cart and buy now buttons
+            attachButtonListeners();
+        });
+
         // Hamburger Menu Toggle
         document.getElementById('hamburger').addEventListener('click', function() {
             const nav = document.getElementById('header-nav');
@@ -247,21 +377,21 @@
         }
 
         // Back to Top Button
-        let mybutton = document.querySelector(".back-to-top");
-        window.onscroll = function() {scrollFunction()};
-
-        function scrollFunction() {
-            if (document.body.scrollTop > 20 || document.documentElement.scrollTop > 20) {
-                mybutton.style.display = "block";
+        const backToTopBtn = document.querySelector(".back-to-top");
+        window.addEventListener("scroll", () => {
+            if (window.scrollY > 100) {
+                backToTopBtn.style.display = "block";
             } else {
-                mybutton.style.display = "none";
+                backToTopBtn.style.display = "none";
             }
-        }
+        });
 
-        function topFunction() {
-            document.body.scrollTop = 0;
-            document.documentElement.scrollTop = 0;
-        }
+        backToTopBtn.addEventListener("click", () => {
+            window.scrollTo({
+                top: 0,
+                behavior: "smooth"
+            });
+        });
     </script>
 </body>
 </html>

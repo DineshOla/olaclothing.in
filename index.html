@@ -202,11 +202,27 @@
             productList.forEach(product => {
                 const productItem = document.createElement('div');
                 productItem.classList.add('category-item');
+                productItem.dataset.id = product.id;
+                productItem.dataset.name = product.name;
+                productItem.dataset.image = product.image;
+                productItem.dataset.price = product.price;
                 productItem.innerHTML = `
                     <img src="${product.image}" alt="${product.name}">
                     <div class="details">
                         <div class="description">${product.name}</div>
                         <div class="price">₹${product.price}</div>
+                        <select class="size-select">
+                            <option value="">Select Size</option>
+                            <option value="S">S</option>
+                            <option value="M">M</option>
+                            <option value="L">L</option>
+                            <option value="XL">XL</option>
+                            <option value="XXL">XXL</option>
+                        </select>
+                        <div class="quantity-select">
+                            <label for="quantity-${product.id}">Quantity:</label>
+                            <input type="number" id="quantity-${product.id}" class="quantity-input" min="1" max="10" value="1">
+                        </div>
                         <div class="button-group">
                             <button class="add-to-cart">Add to Cart</button>
                             <button class="buy-now">Buy Now</button>
@@ -215,6 +231,9 @@
                 `;
                 productContainer.appendChild(productItem);
             });
+
+            // Attach event listeners to the newly created buttons
+            attachButtonListeners();
         }
 
         // Function to display search results in the dropdown
@@ -237,7 +256,6 @@
                         <div class="dropdown-price">₹${product.price}</div>
                     </div>
                 `;
-                // Redirect to product page on click
                 dropdownItem.addEventListener('click', () => {
                     window.location.href = product.link;
                 });
@@ -246,64 +264,18 @@
             searchDropdown.style.display = 'block';
         }
 
-        // Function to load user profile and image
-        function loadUserProfile() {
-            const loggedInUser = localStorage.getItem('loggedInUser');
-            const userNameSpan = document.getElementById('user-name');
-            const profileLink = document.getElementById('profile-link');
-            const userDetailsModal = document.getElementById('user-details-modal');
-            const userImage = document.getElementById('user-image');
-            const modalDetailName = document.getElementById('modal-detail-name');
-            const modalDetailEmail = document.getElementById('modal-detail-email');
-            const modalDetailAddress = document.getElementById('modal-detail-address');
-
-            if (loggedInUser) {
-                const user = JSON.parse(loggedInUser);
-                userNameSpan.textContent = `Hello, ${user.name} | `;
-                profileLink.textContent = 'Logout';
-                profileLink.addEventListener('click', (e) => {
-                    e.preventDefault();
-                    localStorage.removeItem('loggedInUser');
-                    localStorage.removeItem('userImage');
-                    window.location.href = 'profile.html';
-                });
-
-                // Load user image from localStorage if available
-                const savedImage = localStorage.getItem('userImage');
-                if (savedImage) {
-                    userImage.src = savedImage;
-                    userImage.style.display = 'block';
-                }
-
-                modalDetailName.textContent = user.name;
-                modalDetailEmail.textContent = user.email;
-                modalDetailAddress.textContent = user.address || 'Not provided';
-
-                userNameSpan.addEventListener('click', () => {
-                    userDetailsModal.style.display = 'flex';
-                });
-            } else {
-                userNameSpan.textContent = '';
-                profileLink.textContent = 'Profile';
-                userImage.style.display = 'none';
-            }
-
-            document.getElementById('close-user-details').addEventListener('click', () => {
-                userDetailsModal.style.display = 'none';
-            });
-
-            userDetailsModal.addEventListener('click', (e) => {
-                if (e.target === userDetailsModal) {
-                    userDetailsModal.style.display = 'none';
-                }
-            });
-        }
-
         // Search functionality
         document.addEventListener('DOMContentLoaded', () => {
+            console.log('index.html: DOMContentLoaded');
             const searchInput = document.getElementById('search-input');
             const searchBtn = document.getElementById('search-btn');
             const searchDropdown = document.getElementById('search-dropdown');
+
+            // Initialize user profile and data
+            console.log('index.html: Loading user profile...');
+            loadUserProfile();
+            console.log('index.html: Loading user data...');
+            loadUserData();
 
             // Display all products initially
             displayProducts(products);
@@ -343,46 +315,38 @@
                 }
             });
 
-            // Load user profile and image
-            loadUserProfile();
-        });
+            // Hamburger Menu Toggle
+            document.getElementById('hamburger').addEventListener('click', function() {
+                const nav = document.getElementById('header-nav');
+                nav.classList.toggle('active');
+                this.innerHTML = nav.classList.contains('active') ? '<i class="fas fa-times"></i>' : '<i class="fas fa-bars"></i>';
+            });
 
-        // Fallback to ensure user profile loads even if DOMContentLoaded is missed
-        window.onload = () => {
-            loadUserProfile();
-        };
+            // Header Scroll Effect
+            window.addEventListener('scroll', function() {
+                const header = document.querySelector('header');
+                if (window.scrollY > 50) {
+                    header.classList.add('scrolled');
+                } else {
+                    header.classList.remove('scrolled');
+                }
+            });
 
-        // Hamburger Menu Toggle
-        document.getElementById('hamburger').addEventListener('click', function() {
-            const nav = document.getElementById('header-nav');
-            nav.classList.toggle('active');
-            this.innerHTML = nav.classList.contains('active') ? '<i class="fas fa-times"></i>' : '<i class="fas fa-bars"></i>';
-        });
+            // Back to Top Button
+            const backToTopBtn = document.querySelector(".back-to-top");
+            window.addEventListener("scroll", () => {
+                if (window.scrollY > 100) {
+                    backToTopBtn.style.display = "block";
+                } else {
+                    backToTopBtn.style.display = "none";
+                }
+            });
 
-        // Header Scroll Effect
-        window.addEventListener('scroll', function() {
-            const header = document.querySelector('header');
-            if (window.scrollY > 50) {
-                header.classList.add('scrolled');
-            } else {
-                header.classList.remove('scrolled');
-            }
-        });
-
-        // Back to Top Button
-        const backToTopBtn = document.querySelector(".back-to-top");
-        window.addEventListener("scroll", () => {
-            if (window.scrollY > 100) {
-                backToTopBtn.style.display = "block";
-            } else {
-                backToTopBtn.style.display = "none";
-            }
-        });
-
-        backToTopBtn.addEventListener("click", () => {
-            window.scrollTo({
-                top: 0,
-                behavior: "smooth"
+            backToTopBtn.addEventListener("click", () => {
+                window.scrollTo({
+                    top: 0,
+                    behavior: "smooth"
+                });
             });
         });
     </script>

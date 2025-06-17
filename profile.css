@@ -55,6 +55,7 @@ nav {
     display: flex;
     gap: 20px;
     align-items: center;
+    justify-content: flex-end; /* Aligns items to the right */
 }
 
 nav a {
@@ -73,7 +74,7 @@ nav a:hover {
     display: flex;
     align-items: center;
     gap: 5px;
-    flex-direction: column;
+    flex-direction: row; /* Changed to row for horizontal alignment */
 }
 
 .user-image-container {
@@ -101,7 +102,7 @@ nav a:hover {
 }
 
 main {
-    margin-top: 100px;
+    margin-top: 80px; /* Adjusted to account for header height */
     padding: 20px;
 }
 
@@ -129,6 +130,7 @@ main {
     cursor: pointer;
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
     transition: background 0.3s, color 0.3s;
+    z-index: 1100; /* Ensure it stays above other elements */
 }
 
 .close-profile:hover {
@@ -442,15 +444,35 @@ p[id$="-message"].error {
     }
 
     .close-profile {
-        top: 15px;
+        top: 110px; /* Increased further to position below header */
         right: 15px;
         width: 35px;
         height: 35px;
         font-size: 20px;
     }
+
+    header {
+        padding: 8px 0;
+    }
+
+    main {
+        margin-top: 90px; /* Increased to create more space */
+    }
 }
 
 @media (max-width: 480px) {
+    .close-profile {
+        top: 100px; /* Adjusted for smaller devices */
+        right: 10px;
+        width: 30px;
+        height: 30px;
+        font-size: 18px;
+    }
+
+    main {
+        margin-top: 80px; /* Adjusted for smaller header on very small devices */
+    }
+
     #user-profile h1 {
         font-size: 28px;
     }
@@ -475,13 +497,5 @@ p[id$="-message"].error {
     #user-image {
         width: 30px;
         height: 30px;
-    }
-
-    .close-profile {
-        top: 10px;
-        right: 10px;
-        width: 30px;
-        height: 30px;
-        font-size: 18px;
     }
 }

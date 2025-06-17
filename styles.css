@@ -135,6 +135,7 @@ nav {
     display: flex;
     gap: 20px;
     align-items: center;
+    justify-content: flex-end;
 }
 
 nav a {
@@ -153,7 +154,7 @@ nav a:hover {
     display: flex;
     align-items: center;
     gap: 5px;
-    flex-direction: column;
+    flex-direction: row;
 }
 
 .user-image-container {
@@ -181,7 +182,7 @@ nav a:hover {
 }
 
 main {
-    margin-top: 100px;
+    margin-top: 60px;
     padding: 20px;
 }
 
@@ -196,7 +197,7 @@ main {
     z-index: 1000;
     justify-content: center;
     align-items: center;
-    overflow: auto;
+    overflow: hidden;
 }
 
 .user-details-content {
@@ -526,6 +527,27 @@ main {
     font-size: 16px;
 }
 
+.category-item .quantity-select {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 10px;
+}
+
+.category-item .quantity-select label {
+    font-size: 16px;
+    color: #333;
+}
+
+.category-item .quantity-input {
+    width: 60px;
+    padding: 8px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    font-size: 16px;
+    text-align: center;
+}
+
 .category-item .button-group {
     display: flex;
     gap: 10px;
@@ -573,7 +595,7 @@ main {
     z-index: 1000;
     justify-content: center;
     align-items: center;
-    overflow: auto;
+    overflow: hidden;
 }
 
 .cart-content,
@@ -587,16 +609,8 @@ main {
     overflow-y: auto;
     position: relative;
     box-sizing: border-box;
-}
-
-.close {
-    position: absolute;
-    top: 10px;
-    right: 10px;
-    font-size: 24px;
-    cursor: pointer;
-    color: #333;
-    z-index: 1001;
+    display: flex;
+    flex-direction: column;
 }
 
 .cart-content h2,
@@ -604,11 +618,17 @@ main {
     font-size: 24px;
     margin-bottom: 20px;
     color: #333;
+    position: sticky;
+    top: 0;
+    background: white;
+    z-index: 1;
 }
 
 #cart-items,
 #order-history-items {
+    flex-grow: 1;
     margin-bottom: 20px;
+    overflow-y: auto;
 }
 
 .cart-item,
@@ -692,6 +712,26 @@ main {
 .cart-content button:hover,
 .order-history-content button:hover {
     background: #f4511e;
+}
+
+.cart-total,
+.order-total {
+    margin-top: 20px;
+    padding: 10px;
+    background: #f9f9f9;
+    border-radius: 5px;
+    text-align: right;
+}
+
+.cart-total p,
+.order-total p {
+    font-size: 18px;
+    color: #333;
+}
+
+.cart-total p strong,
+.order-total p strong {
+    color: #d81b60;
 }
 
 .footer-container {
@@ -896,5 +936,14 @@ main {
 
     .dropdown-price {
         font-size: 12px;
+    }
+
+    .category-item .quantity-select {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .category-item .quantity-input {
+        width: 100%;
     }
 }

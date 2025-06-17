@@ -16,8 +16,9 @@
             </div>
             <div class="search-bar">
                 <i class="fas fa-search search-icon"></i>
-                <input type="text" placeholder="Search Shirt, Jeans, or Code">
-                <button><i class="fas fa-search"></i></button>
+                <input type="text" id="search-input" placeholder="Search Shirt, Jeans, or Code">
+                <button id="search-btn"><i class="fas fa-search"></i></button>
+                <div class="search-dropdown" id="search-dropdown"></div>
             </div>
             <button class="hamburger" id="hamburger">
                 <i class="fas fa-bars"></i>
@@ -26,7 +27,13 @@
                 <a href="index.html#home">Home</a>
                 <a href="index.html#about">About</a>
                 <a href="index.html#contact">Contact</a>
-                <a href="#">Profile</a>
+                <div class="user-profile">
+                    <div class="user-image-container">
+                        <img id="user-image" src="img/default-user.png" alt="User Image">
+                    </div>
+                    <span id="user-name" style="cursor: pointer;"></span>
+                    <a href="profile.html" id="profile-link">Profile</a>
+                </div>
                 <a href="#cart">Cart (<span id="cart-count">0</span>)</a>
                 <a href="#order-history">Orders</a>
             </nav>
@@ -34,6 +41,20 @@
     </header>
 
     <main>
+        <!-- User Details Popup Modal -->
+        <div class="user-details-modal" id="user-details-modal">
+            <div class="user-details-content">
+                <span class="close" id="close-user-details">×</span>
+                <h2>User Details</h2>
+                <div id="modal-user-details">
+                    <p><strong>Name:</strong> <span id="modal-detail-name"></span></p>
+                    <p><strong>Email:</strong> <span id="modal-detail-email"></span></p>
+                    <p><strong>Address:</strong> <span id="modal-detail-address"></span></p>
+                </div>
+                <button id="update-profile-btn" onclick="window.location.href='profile.html'">Update Profile</button>
+            </div>
+        </div>
+
         <section class="categories category-collection" id="mens-shirts">
             <h2>Men Shirts Collection</h2>
             <button class="back-to-categories" onclick="hideCategoryCollection()">Back to Categories</button>
@@ -52,6 +73,10 @@
                             <option value="XL">XL</option>
                             <option value="XXL">XXL</option>
                         </select>
+                        <div class="quantity-select">
+                            <label for="quantity-501">Quantity:</label>
+                            <input type="number" id="quantity-501" class="quantity-input" min="1" max="10" value="1">
+                        </div>
                         <div class="button-group">
                             <button class="add-to-cart">Add to Cart</button>
                             <button class="buy-now">Buy Now</button>
@@ -72,6 +97,10 @@
                             <option value="XL">XL</option>
                             <option value="XXL">XXL</option>
                         </select>
+                        <div class="quantity-select">
+                            <label for="quantity-502">Quantity:</label>
+                            <input type="number" id="quantity-502" class="quantity-input" min="1" max="10" value="1">
+                        </div>
                         <div class="button-group">
                             <button class="add-to-cart">Add to Cart</button>
                             <button class="buy-now">Buy Now</button>
@@ -92,6 +121,10 @@
                             <option value="XL">XL</option>
                             <option value="XXL">XXL</option>
                         </select>
+                        <div class="quantity-select">
+                            <label for="quantity-503">Quantity:</label>
+                            <input type="number" id="quantity-503" class="quantity-input" min="1" max="10" value="1">
+                        </div>
                         <div class="button-group">
                             <button class="add-to-cart">Add to Cart</button>
                             <button class="buy-now">Buy Now</button>
@@ -112,6 +145,10 @@
                             <option value="XL">XL</option>
                             <option value="XXL">XXL</option>
                         </select>
+                        <div class="quantity-select">
+                            <label for="quantity-504">Quantity:</label>
+                            <input type="number" id="quantity-504" class="quantity-input" min="1" max="10" value="1">
+                        </div>
                         <div class="button-group">
                             <button class="add-to-cart">Add to Cart</button>
                             <button class="buy-now">Buy Now</button>
@@ -132,6 +169,10 @@
                             <option value="XL">XL</option>
                             <option value="XXL">XXL</option>
                         </select>
+                        <div class="quantity-select">
+                            <label for="quantity-505">Quantity:</label>
+                            <input type="number" id="quantity-505" class="quantity-input" min="1" max="10" value="1">
+                        </div>
                         <div class="button-group">
                             <button class="add-to-cart">Add to Cart</button>
                             <button class="buy-now">Buy Now</button>
@@ -152,6 +193,10 @@
                             <option value="XL">XL</option>
                             <option value="XXL">XXL</option>
                         </select>
+                        <div class="quantity-select">
+                            <label for="quantity-506">Quantity:</label>
+                            <input type="number" id="quantity-506" class="quantity-input" min="1" max="10" value="1">
+                        </div>
                         <div class="button-group">
                             <button class="add-to-cart">Add to Cart</button>
                             <button class="buy-now">Buy Now</button>
@@ -224,44 +269,127 @@
     <!-- JavaScript -->
     <script src="scriptaddtcart.js"></script>
     <script>
-        // Hamburger Menu Toggle
-        document.getElementById('hamburger').addEventListener('click', function() {
-            const nav = document.getElementById('header-nav');
-            nav.classList.toggle('active');
-            this.innerHTML = nav.classList.contains('active') ? '<i class="fas fa-times"></i>' : '<i class="fas fa-bars"></i>';
-        });
+        // Sample product data for search
+        const products = [
+            { id: 1, name: "Men's Casual Shirt", category: "Shirts", price: 799, image: "img/men_shirts.jpeg", link: "shirts.html" },
+            { id: 2, name: "Men's Denim Jeans", category: "Denim", price: 1299, image: "img/men_denim.jpg.webp", link: "denim.html" },
+            { id: 3, name: "Men's Polo Tee", category: "Polos & Tees", price: 599, image: "img/men_polos&tees.jpg", link: "polos-tees.html" },
+            { id: 4, name: "Men's Sneakers", category: "Shoes", price: 1999, image: "img/men_shoes_2_sneaker.jpeg", link: "shoes.html" },
+            { id: 5, name: "Women's Handbag", category: "Bags", price: 1499, image: "img/women_bags.jpg", link: "bags.html" },
+            { id: 6, name: "Women's Dress", category: "Dresses", price: 1799, image: "img/women_dresses.jpg", link: "dress.html" },
+            { id: 7, name: "Women's Top", category: "Tops", price: 699, image: "img/women_tops.jpg", link: "tops.html" },
+            { id: 8, name: "Women's Jeans", category: "Jeans", price: 1199, image: "img/women_jeans.jpg", link: "jeans.html" }
+        ];
 
-        // Header Scroll Effect
-        window.addEventListener('scroll', function() {
-            const header = document.querySelector('header');
-            if (window.scrollY > 50) {
-                header.classList.add('scrolled');
-            } else {
-                header.classList.remove('scrolled');
-            }
-        });
-
-        // Back to Categories
+        // Function to navigate back to categories
         function hideCategoryCollection() {
             window.location.href = 'index.html#mens-categories';
         }
 
-        // Back to Top Button
-        let mybutton = document.querySelector(".back-to-top");
-        window.onscroll = function() {scrollFunction()};
+        // Function to display search results in the dropdown
+        function displaySearchDropdown(productList) {
+            const searchDropdown = document.getElementById('search-dropdown');
+            searchDropdown.innerHTML = '';
 
-        function scrollFunction() {
-            if (document.body.scrollTop > 20 || document.documentElement.scrollTop > 20) {
-                mybutton.style.display = "block";
-            } else {
-                mybutton.style.display = "none";
+            if (productList.length === 0) {
+                searchDropdown.style.display = 'none';
+                return;
             }
+
+            productList.forEach(product => {
+                const dropdownItem = document.createElement('div');
+                dropdownItem.classList.add('search-dropdown-item');
+                dropdownItem.innerHTML = `
+                    <img src="${product.image}" alt="${product.name}">
+                    <div class="dropdown-details">
+                        <div class="dropdown-name">${product.name}</div>
+                        <div class="dropdown-price">₹${product.price}</div>
+                    </div>
+                `;
+                dropdownItem.addEventListener('click', () => {
+                    window.location.href = product.link;
+                });
+                searchDropdown.appendChild(dropdownItem);
+            });
+            searchDropdown.style.display = 'block';
         }
 
-        function topFunction() {
-            document.body.scrollTop = 0;
-            document.documentElement.scrollTop = 0;
-        }
+        // Search functionality and event listeners
+        document.addEventListener('DOMContentLoaded', () => {
+            const searchInput = document.getElementById('search-input');
+            const searchBtn = document.getElementById('search-btn');
+            const searchDropdown = document.getElementById('search-dropdown');
+
+            // Initialize user profile and data
+            loadUserProfile();
+            loadUserData(); // Ensure user-specific data is loaded
+
+            // Search on input (real-time filtering for dropdown)
+            searchInput.addEventListener('input', () => {
+                const searchTerm = searchInput.value.toLowerCase();
+                if (searchTerm === '') {
+                    searchDropdown.style.display = 'none';
+                    return;
+                }
+
+                const filteredProducts = products.filter(product => 
+                    product.name.toLowerCase().includes(searchTerm) || 
+                    product.category.toLowerCase().includes(searchTerm)
+                );
+                displaySearchDropdown(filteredProducts);
+            });
+
+            // Search on button click
+            searchBtn.addEventListener('click', () => {
+                const searchTerm = searchInput.value.toLowerCase();
+                const filteredProducts = products.filter(product => 
+                    product.name.toLowerCase().includes(searchTerm) || 
+                    product.category.toLowerCase().includes(searchTerm)
+                );
+                displaySearchDropdown(filteredProducts);
+            });
+
+            // Hide dropdown when clicking outside
+            document.addEventListener('click', (e) => {
+                if (!searchInput.contains(e.target) && !searchDropdown.contains(e.target)) {
+                    searchDropdown.style.display = 'none';
+                }
+            });
+
+            // Hamburger Menu Toggle
+            document.getElementById('hamburger').addEventListener('click', function() {
+                const nav = document.getElementById('header-nav');
+                nav.classList.toggle('active');
+                this.innerHTML = nav.classList.contains('active') ? '<i class="fas fa-times"></i>' : '<i class="fas fa-bars"></i>';
+            });
+
+            // Header Scroll Effect
+            window.addEventListener('scroll', function() {
+                const header = document.querySelector('header');
+                if (window.scrollY > 50) {
+                    header.classList.add('scrolled');
+                } else {
+                    header.classList.remove('scrolled');
+                }
+            });
+
+            // Back to Top Button
+            const backToTopBtn = document.querySelector(".back-to-top");
+            window.addEventListener("scroll", () => {
+                if (window.scrollY > 100) {
+                    backToTopBtn.style.display = "block";
+                } else {
+                    backToTopBtn.style.display = "none";
+                }
+            });
+
+            backToTopBtn.addEventListener("click", () => {
+                window.scrollTo({
+                    top: 0,
+                    behavior: "smooth"
+                });
+            });
+        });
     </script>
 </body>
 </html>
