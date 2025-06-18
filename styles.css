@@ -35,6 +35,10 @@ header.scrolled {
     padding: 0 20px;
 }
 
+.logo a {
+    text-decoration: none; /* Remove underline from link */
+    color: inherit; /* Inherit color from .logo or .logo span */
+}
 .logo span {
     color: white;
     font-size: 28px;
@@ -541,7 +545,7 @@ main {
 
 .category-item .quantity-input {
     width: 60px;
-    padding: 8px;
+    padding: 5px;
     border: 1px solid #ddd;
     border-radius: 5px;
     font-size: 16px;

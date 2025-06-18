@@ -12,7 +12,7 @@
     <header>
         <div class="header-container">
             <div class="logo">
-                <span>Ola Clothing</span>
+                <a href="index.html#home"><span>Ola Clothing</span></a>
             </div>
             <div class="search-bar">
                 <i class="fas fa-search search-icon"></i>
@@ -75,7 +75,7 @@
                         </select>
                          <div class="quantity-select">
                             <label for="quantity-201">Quantity:</label>
-                            <input type="number" id="quantity-201" class="quantity-input" min="1" max="10" value="1">
+                            <input type="number" id="quantity-201" class="quantity-input" min="1" max="10" value="1" oninput="restrictQuantity(this)">
                         </div>
                         <div class="button-group">
                             <button class="add-to-cart">Add to Cart</button>
@@ -99,7 +99,7 @@
                         </select>
                         <div class="quantity-select">
                             <label for="quantity-202">Quantity:</label>
-                            <input type="number" id="quantity-202" class="quantity-input" min="1" max="10" value="1">
+                            <input type="number" id="quantity-202" class="quantity-input" min="1" max="10" value="1" oninput="restrictQuantity(this)">
                         </div>
                         <div class="button-group">
                             <button class="add-to-cart">Add to Cart</button>
@@ -123,7 +123,7 @@
                         </select>
                         <div class="quantity-select">
                             <label for="quantity-203">Quantity:</label>
-                            <input type="number" id="quantity-203" class="quantity-input" min="1" max="10" value="1">
+                            <input type="number" id="quantity-203" class="quantity-input" min="1" max="10" value="1" oninput="restrictQuantity(this)">
                         </div>
                         <div class="button-group">
                             <button class="add-to-cart">Add to Cart</button>
@@ -147,7 +147,7 @@
                         </select>
                         <div class="quantity-select">
                             <label for="quantity-204">Quantity:</label>
-                            <input type="number" id="quantity-204" class="quantity-input" min="1" max="10" value="1">
+                            <input type="number" id="quantity-204" class="quantity-input" min="1" max="10" value="1" oninput="restrictQuantity(this)">
                         </div>
                         <div class="button-group">
                             <button class="add-to-cart">Add to Cart</button>
@@ -171,7 +171,7 @@
                         </select>
                         <div class="quantity-select">
                             <label for="quantity-205">Quantity:</label>
-                            <input type="number" id="quantity-205" class="quantity-input" min="1" max="10" value="1">
+                            <input type="number" id="quantity-205" class="quantity-input" min="1" max="10" value="1" oninput="restrictQuantity(this)">
                         </div>
                         <div class="button-group">
                             <button class="add-to-cart">Add to Cart</button>
@@ -195,7 +195,7 @@
                         </select>
                         <div class="quantity-select">
                             <label for="quantity-206">Quantity:</label>
-                            <input type="number" id="quantity-206" class="quantity-input" min="1" max="10" value="1">
+                            <input type="number" id="quantity-206" class="quantity-input" min="1" max="10" value="1" oninput="restrictQuantity(this)">
                         </div>
                         <div class="button-group">
                             <button class="add-to-cart">Add to Cart</button>
@@ -280,6 +280,17 @@
             { id: 7, name: "Women's Top", category: "Tops", price: 699, image: "img/women_tops.jpg", link: "tops.html" },
             { id: 8, name: "Women's Jeans", category: "Jeans", price: 1199, image: "img/women_jeans.jpg", link: "jeans.html" }
         ];
+
+        // Restrict quantity input to max 10
+        function restrictQuantity(input) {
+        const value = parseInt(input.value);
+        if (value > 10) {
+        input.value = 10;
+        alert("Maximum quantity is 10.");
+        } else if (value < 1 || isNaN(value)) {
+        input.value = 1;
+        }
+        }
 
         // Function to display search results in the dropdown
         function displaySearchDropdown(productList) {

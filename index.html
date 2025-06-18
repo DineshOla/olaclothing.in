@@ -12,7 +12,7 @@
     <header>
         <div class="header-container">
             <div class="logo">
-                <span>Ola Clothing</span>
+                <a href="index.html#home"><span>Ola Clothing</span></a>
             </div>
             <div class="search-bar">
                 <i class="fas fa-search search-icon"></i>
@@ -194,47 +194,58 @@
             { id: 8, name: "Women's Jeans", category: "Jeans", price: 1199, image: "img/women_jeans.jpg", link: "jeans.html" }
         ];
 
-        // Function to display products in the main product list
-        function displayProducts(productList) {
-            const productContainer = document.getElementById('product-container');
-            productContainer.innerHTML = '';
+       // Function to display products in the main product list
+function displayProducts(productList) {
+    const productContainer = document.getElementById('product-container');
+    productContainer.innerHTML = '';
 
-            productList.forEach(product => {
-                const productItem = document.createElement('div');
-                productItem.classList.add('category-item');
-                productItem.dataset.id = product.id;
-                productItem.dataset.name = product.name;
-                productItem.dataset.image = product.image;
-                productItem.dataset.price = product.price;
-                productItem.innerHTML = `
-                    <img src="${product.image}" alt="${product.name}">
-                    <div class="details">
-                        <div class="description">${product.name}</div>
-                        <div class="price">₹${product.price}</div>
-                        <select class="size-select">
-                            <option value="">Select Size</option>
-                            <option value="S">S</option>
-                            <option value="M">M</option>
-                            <option value="L">L</option>
-                            <option value="XL">XL</option>
-                            <option value="XXL">XXL</option>
-                        </select>
-                        <div class="quantity-select">
-                            <label for="quantity-${product.id}">Quantity:</label>
-                            <input type="number" id="quantity-${product.id}" class="quantity-input" min="1" max="10" value="1">
-                        </div>
-                        <div class="button-group">
-                            <button class="add-to-cart">Add to Cart</button>
-                            <button class="buy-now">Buy Now</button>
-                        </div>
-                    </div>
-                `;
-                productContainer.appendChild(productItem);
-            });
+    productList.forEach(product => {
+        const productItem = document.createElement('div');
+        productItem.classList.add('category-item');
+        productItem.dataset.id = product.id;
+        productItem.dataset.name = product.name;
+        productItem.dataset.image = product.image;
+        productItem.dataset.price = product.price;
+        productItem.innerHTML = `
+            <img src="${product.image}" alt="${product.name}">
+            <div class="details">
+                <div class="description">${product.name}</div>
+                <div class="price">₹${product.price}</div>
+                <select class="size-select">
+                    <option value="">Select Size</option>
+                    <option value="S">S</option>
+                    <option value="M">M</option>
+                    <option value="L">L</option>
+                    <option value="XL">XL</option>
+                    <option value="XXL">XXL</option>
+                </select>
+                <div class="quantity-select">
+                    <label for="quantity-${product.id}">Quantity:</label>
+                    <input type="number" id="quantity-${product.id}" class="quantity-input" min="1" max="10" value="1" oninput="restrictQuantity(this)">
+                </div>
+                <div class="button-group">
+                    <button class="add-to-cart">Add to Cart</button>
+                    <button class="buy-now">Buy Now</button>
+                </div>
+            </div>
+        `;
+        productContainer.appendChild(productItem);
+    });
 
-            // Attach event listeners to the newly created buttons
-            attachButtonListeners();
-        }
+    // Attach event listeners to the newly created buttons
+    attachButtonListeners();
+}
+
+// Restrict quantity input to max 10
+function restrictQuantity(input) {
+    const value = parseInt(input.value);
+    if (value > 10) {
+        input.value = 10;
+        alert("Maximum quantity is 10.");
+    } else if (value < 1 || isNaN(value)) {
+        input.value = 1;
+    }
+}
 
         // Function to display search results in the dropdown
         function displaySearchDropdown(productList) {

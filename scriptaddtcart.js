@@ -27,7 +27,6 @@ function loadUserData() {
         console.log(`loadUserData: Loaded cart (${cart.length} items) and orderHistory (${orderHistory.length} orders) for user ${currentUserId}`);
         updateCartCount();
         renderCartItems();
-        // Do not call renderOrderHistory here to avoid DOM issues; call it when modal opens
     } catch (error) {
         console.error('loadUserData: Error loading user data from localStorage', error);
         cart = [];
@@ -59,13 +58,18 @@ function updateCartCount() {
         const totalItems = cart.reduce((sum, item) => sum + item.quantity, 0);
         cartCountElement.textContent = totalItems;
         console.log(`updateCartCount: Updated cart count to ${totalItems}`);
+    } else {
+        console.warn('updateCartCount: No cart-count element found');
     }
 }
 
 // Render cart items inside the modal
 function renderCartItems() {
     const container = document.getElementById('cart-items');
-    if (!container) return;
+    if (!container) {
+        console.warn('renderCartItems: No cart-items container found');
+        return;
+    }
     container.innerHTML = '';
     if (cart.length === 0) {
         container.innerHTML = '<p>Your cart is empty.</p>';
@@ -105,7 +109,7 @@ function renderCartItems() {
 function renderOrderHistory() {
     const container = document.getElementById('order-history-items');
     if (!container) {
-        console.log('renderOrderHistory: No order-history-items container found');
+        console.warn('renderOrderHistory: No order-history-items container found');
         return;
     }
     container.innerHTML = '';
@@ -148,7 +152,10 @@ function toggleBodyScroll(disable) {
 // Buy Now logic
 function setupBuyNow() {
     const buyNowButton = document.getElementById('buy-now');
-    if (!buyNowButton) return;
+    if (!buyNowButton) {
+        console.warn('setupBuyNow: No buy-now button found');
+        return;
+    }
     buyNowButton.addEventListener('click', () => {
         const loggedInUser = localStorage.getItem('loggedInUser');
         if (!loggedInUser) {
@@ -159,6 +166,13 @@ function setupBuyNow() {
 
         if (cart.length === 0) {
             alert('Cart is empty!');
+            return;
+        }
+
+        // Validate cart quantities
+        const invalidItem = cart.find(item => item.quantity > 10);
+        if (invalidItem) {
+            alert(`Quantity for ${invalidItem.name} exceeds maximum limit of 10. Please adjust quantity.`);
             return;
         }
 
@@ -202,6 +216,8 @@ function setupCartModal() {
                 toggleBodyScroll(true);
             }
         });
+    } else {
+        console.warn('setupCartModal: No cart link found');
     }
 
     const closeCartButton = document.getElementById('close-cart');
@@ -238,6 +254,8 @@ function setupOrderHistoryModal() {
                 toggleBodyScroll(true);
             }
         });
+    } else {
+        console.warn('setupOrderHistoryModal: No order-history link found');
     }
 
     const closeOrderHistoryButton = document.getElementById('close-order-history');
@@ -275,6 +293,13 @@ function attachButtonListeners() {
 
             if (quantity < 1) {
                 alert("Quantity must be at least 1.");
+                quantityInput.value = 1;
+                return null;
+            }
+
+            if (quantity > 10) {
+                alert("Maximum quantity is 10.");
+                quantityInput.value = 10;
                 return null;
             }
 
@@ -292,6 +317,7 @@ function attachButtonListeners() {
 
                 const product = getProductDetails();
                 if (product) {
+                    console.log(`Adding to cart: ${product.name}, Quantity: ${product.quantity}`);
                     cart.push(product);
                     saveUserData();
                     updateCartCount();
@@ -312,6 +338,7 @@ function attachButtonListeners() {
 
                 const product = getProductDetails();
                 if (product) {
+                    console.log(`Buying now: ${product.name}, Quantity: ${product.quantity}`);
                     cart.push(product);
                     saveUserData();
                     updateCartCount();
@@ -338,13 +365,15 @@ function loadUserProfile() {
     const modalDetailEmail = document.getElementById('modal-detail-email');
     const modalDetailAddress = document.getElementById('modal-detail-address');
 
-    if (loggedInUser && userNameSpan && profileLink && userImage) {
+    if (loggedInUser && profileLink && userImage) {
         try {
             const user = JSON.parse(loggedInUser);
             currentUserId = user.email; // Use email as unique user ID
             console.log(`loadUserProfile: Loaded user with email ${currentUserId}`);
-            userNameSpan.textContent = user.name;
-            userNameSpan.style.cursor = 'pointer';
+            if (userNameSpan) {
+                userNameSpan.textContent = user.name;
+                userNameSpan.style.cursor = 'pointer';
+            }
             profileLink.textContent = 'Logout';
             profileLink.addEventListener('click', (e) => {
                 e.preventDefault();
@@ -393,8 +422,8 @@ function loadUserProfile() {
         }
     } else {
         console.log('loadUserProfile: No loggedInUser or missing DOM elements');
-        if (userNameSpan && profileLink && userImage) {
-            userNameSpan.textContent = '';
+        if (profileLink && userImage) {
+            if (userNameSpan) userNameSpan.textContent = '';
             profileLink.textContent = 'Profile';
             userImage.style.display = 'none';
         }
@@ -422,7 +451,7 @@ function loadUserProfile() {
 
 // Initialize event listeners and cart count on page load
 document.addEventListener('DOMContentLoaded', () => {
-    console.log('DOMContentLoaded: Initializing page');
+    console.log('scriptaddtcart.js: DOMContentLoaded');
     loadUserProfile();
     attachButtonListeners();
     setupBuyNow();
