@@ -7,6 +7,7 @@
     <link rel="stylesheet" href="styles.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" integrity="sha512-9usAa10IRO0HhonpyAIVpjrylPvoDwiPUiKdWk5t3PyolY1cOd4DSE0Ga+ri4AuTroPR5aQvXU9xC6qOPnzFeg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@200;300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="manifest" href="manifest.json">
 </head>
 <body>
     <header>
@@ -63,14 +64,14 @@
             </picture>
         </section>
 
-        <section class="discounts">
+        <!-- <section class="discounts">
             <div class="discount-box-men">
                 <h2>FLAT <span>10%</span> OFF ON MEN WEARABLES</h2>
             </div>
             <div class="discount-box-women">
                 <h2>FLAT <span>40%</span> OFF ON WOMEN WEARABLES</h2>
             </div>
-        </section>
+        </section> -->
 
         <section class="categories" id="mens-categories">
             <h2>Men Categories</h2>
@@ -110,7 +111,7 @@
                     <p>Tops</p>
                 </div>
                 <div class="category-item">
-                    <a href="jeans.html"><img src="img/women_jeans.jpg" alt="Denim"></a>
+                    <a href="jeans.html"><img src="img/women_jeans.jpg" alt="Jeans"></a>
                     <p>Jeans</p>
                 </div>
             </div>
@@ -146,7 +147,7 @@
 
     <footer id="contact" class="footer-container">
         <h2>Contact Us</h2>
-        <p>Email: <a href="mailto:2023bcadinesh13503@poornima.edu.in">2023bcadinesh13503@poornima.edu.in</a></p>
+        <p>Email: <a href="mailto:query@olaclothing.in">query@olaclothing.in</a></p>
         <p>Phone: <a href="tel:+9166513832">+91 9166513832</a></p>
         <p>Address: Jaipur, Rajasthan, India</p>
         <div class="footer-bottom">
@@ -194,58 +195,58 @@
             { id: 8, name: "Women's Jeans", category: "Jeans", price: 1199, image: "img/women_jeans.jpg", link: "jeans.html" }
         ];
 
-       // Function to display products in the main product list
-function displayProducts(productList) {
-    const productContainer = document.getElementById('product-container');
-    productContainer.innerHTML = '';
+        // Function to display products in the main product list
+        function displayProducts(productList) {
+            const productContainer = document.getElementById('product-container');
+            productContainer.innerHTML = '';
 
-    productList.forEach(product => {
-        const productItem = document.createElement('div');
-        productItem.classList.add('category-item');
-        productItem.dataset.id = product.id;
-        productItem.dataset.name = product.name;
-        productItem.dataset.image = product.image;
-        productItem.dataset.price = product.price;
-        productItem.innerHTML = `
-            <img src="${product.image}" alt="${product.name}">
-            <div class="details">
-                <div class="description">${product.name}</div>
-                <div class="price">₹${product.price}</div>
-                <select class="size-select">
-                    <option value="">Select Size</option>
-                    <option value="S">S</option>
-                    <option value="M">M</option>
-                    <option value="L">L</option>
-                    <option value="XL">XL</option>
-                    <option value="XXL">XXL</option>
-                </select>
-                <div class="quantity-select">
-                    <label for="quantity-${product.id}">Quantity:</label>
-                    <input type="number" id="quantity-${product.id}" class="quantity-input" min="1" max="10" value="1" oninput="restrictQuantity(this)">
-                </div>
-                <div class="button-group">
-                    <button class="add-to-cart">Add to Cart</button>
-                    <button class="buy-now">Buy Now</button>
-                </div>
-            </div>
-        `;
-        productContainer.appendChild(productItem);
-    });
+            productList.forEach(product => {
+                const productItem = document.createElement('div');
+                productItem.classList.add('category-item');
+                productItem.dataset.id = product.id;
+                productItem.dataset.name = product.name;
+                productItem.dataset.image = product.image;
+                productItem.dataset.price = product.price;
+                productItem.innerHTML = `
+                    <img src="${product.image}" alt="${product.name}">
+                    <div class="details">
+                        <div class="description">${product.name}</div>
+                        <div class="price">₹${product.price}</div>
+                        <select class="size-select">
+                            <option value="">Select Size</option>
+                            <option value="S">S</option>
+                            <option value="M">M</option>
+                            <option value="L">L</option>
+                            <option value="XL">XL</option>
+                            <option value="XXL">XXL</option>
+                        </select>
+                        <div class="quantity-select">
+                            <label for="quantity-${product.id}">Quantity:</label>
+                            <input type="number" id="quantity-${product.id}" class="quantity-input" min="1" max="10" value="1" oninput="restrictQuantity(this)">
+                        </div>
+                        <div class="button-group">
+                            <button class="add-to-cart">Add to Cart</button>
+                            <button class="buy-now">Buy Now</button>
+                        </div>
+                    </div>
+                `;
+                productContainer.appendChild(productItem);
+            });
 
-    // Attach event listeners to the newly created buttons
-    attachButtonListeners();
-}
+            // Attach event listeners to the newly created buttons
+            attachButtonListeners();
+        }
 
-// Restrict quantity input to max 10
-function restrictQuantity(input) {
-    const value = parseInt(input.value);
-    if (value > 10) {
-        input.value = 10;
-        alert("Maximum quantity is 10.");
-    } else if (value < 1 || isNaN(value)) {
-        input.value = 1;
-    }
-}
+        // Restrict quantity input to max 10
+        function restrictQuantity(input) {
+            const value = parseInt(input.value);
+            if (value > 10) {
+                input.value = 10;
+                alert("Maximum quantity is 10.");
+            } else if (value < 1 || isNaN(value)) {
+                input.value = 1;
+            }
+        }
 
         // Function to display search results in the dropdown
         function displaySearchDropdown(productList) {
@@ -359,6 +360,17 @@ function restrictQuantity(input) {
                     behavior: "smooth"
                 });
             });
+
+            // Register Service Worker
+            if ('serviceWorker' in navigator) {
+                navigator.serviceWorker.register('serviceworker.js')
+                    .then(registration => {
+                        console.log('Service Worker registered with scope:', registration.scope);
+                    })
+                    .catch(error => {
+                        console.error('Service Worker registration failed:', error);
+                    });
+            }
         });
     </script>
 </body>
