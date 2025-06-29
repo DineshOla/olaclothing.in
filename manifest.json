@@ -3,17 +3,18 @@
     "short_name": "Ola Clothing",
     "description": "Shop the latest men's and women's fashion at Ola Clothing.",
     "start_url": "/index.html",
+    "scope": "/",
     "display": "standalone",
     "theme_color": "#ff4500",
     "background_color": "#ffffff",
     "icons": [
         {
-            "src": "img/icon-192x192.png",
+            "src": "/img/icon-192x192.png",
             "sizes": "192x192",
             "type": "image/png"
         },
         {
-            "src": "img/icon-512x512.png",
+            "src": "/img/icon-192x192.png",
             "sizes": "512x512",
             "type": "image/png"
         }

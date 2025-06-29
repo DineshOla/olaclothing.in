@@ -7,7 +7,8 @@
     <link rel="stylesheet" href="styles.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" integrity="sha512-9usAa10IRO0HhonpyAIVpjrylPvoDwiPUiKdWk5t3PyolY1cOd4DSE0Ga+ri4AuTroPR5aQvXU9xC6qOPnzFeg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@200;300;400;500;600;700&display=swap" rel="stylesheet">
-    <link rel="manifest" href="manifest.json">
+    <link rel="manifest" href="/manifest.json">
+    <meta name="theme-color" content="#ff4500">
 </head>
 <body>
     <header>
@@ -147,7 +148,7 @@
 
     <footer id="contact" class="footer-container">
         <h2>Contact Us</h2>
-        <p>Email: <a href="mailto:query@olaclothing.in">query@olaclothing.in</a></p>
+        <p>Email: <a href="mailto:2023bcadinesh13503@poornima.edu.in">2023bcadinesh13503@poornima.edu.in</a></p>
         <p>Phone: <a href="tel:+9166513832">+91 9166513832</a></p>
         <p>Address: Jaipur, Rajasthan, India</p>
         <div class="footer-bottom">
@@ -363,14 +364,54 @@
 
             // Register Service Worker
             if ('serviceWorker' in navigator) {
-                navigator.serviceWorker.register('serviceworker.js')
-                    .then(registration => {
-                        console.log('Service Worker registered with scope:', registration.scope);
-                    })
-                    .catch(error => {
-                        console.error('Service Worker registration failed:', error);
-                    });
+                window.addEventListener('load', () => {
+                    navigator.serviceWorker.register('/serviceworker.js')
+                        .then(registration => {
+                            console.log('Service Worker registered with scope:', registration.scope);
+                        })
+                        .catch(error => {
+                            console.error('Service Worker registration failed:', error);
+                        });
+                });
             }
+
+            // Listen for the beforeinstallprompt event to trigger the install prompt
+            let deferredPrompt;
+            window.addEventListener('beforeinstallprompt', (e) => {
+                e.preventDefault();
+                deferredPrompt = e;
+                console.log('beforeinstallprompt event fired');
+                // Optionally, show a custom install button
+                showInstallPrompt();
+            });
+
+            function showInstallPrompt() {
+                // You can add a button in your UI to trigger this
+                const installButton = document.createElement('button');
+                installButton.textContent = 'Install Ola Clothing App';
+                installButton.style.cssText = 'position: fixed; bottom: 20px; right: 20px; padding: 10px 20px; background: #ff4500; color: #fff; border: none; border-radius: 5px; cursor: pointer; z-index: 1000;';
+                document.body.appendChild(installButton);
+
+                installButton.addEventListener('click', () => {
+                    if (deferredPrompt) {
+                        deferredPrompt.prompt();
+                        deferredPrompt.userChoice.then((choiceResult) => {
+                            if (choiceResult.outcome === 'accepted') {
+                                console.log('User accepted the install prompt');
+                            } else {
+                                console.log('User dismissed the install prompt');
+                            }
+                            deferredPrompt = null;
+                            installButton.remove();
+                        });
+                    }
+                });
+            }
+
+            // Detect if the app is installed
+            window.addEventListener('appinstalled', () => {
+                console.log('PWA was installed');
+            });
         });
     </script>
 </body>

@@ -26,6 +26,9 @@ self.addEventListener('install', event => {
                 console.log('Opened cache');
                 return cache.addAll(urlsToCache);
             })
+            .catch(error => {
+                console.error('Cache addAll failed:', error);
+            })
     );
 });
 
@@ -33,7 +36,9 @@ self.addEventListener('fetch', event => {
     event.respondWith(
         caches.match(event.request)
             .then(response => {
-                return response || fetch(event.request);
+                return response || fetch(event.request).catch(() => {
+                    console.error('Fetch failed for:', event.request.url);
+                });
             })
     );
 });
